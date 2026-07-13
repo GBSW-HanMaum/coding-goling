@@ -1,0 +1,44 @@
+spring:
+  application:
+    name: CodingGoling-Be
+  jackson:
+    # 07번 컨벤션: API 경계의 JSON 필드명은 snake_case.
+    # 응답만 @JsonProperty 로 snake_case 를 쓰고 요청 DTO 는 camelCase 로 두면,
+    # 프론트가 snake_case 로 보낸 값이 바인딩되지 않고 조용히 null 이 된다 (실제로 겪음).
+    property-naming-strategy: SNAKE_CASE
+  datasource:
+    url: jdbc:mysql://localhost:3306/codingoling_db?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+    username: root
+    password: ${DB_PASSWORD:mysql}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      # 07번 문서 컨벤션. 스키마 자체는 docs/schema.sql 이 소스 오브 트루스이고,
+      # update 는 필드 추가만 자동 반영한다(이름 변경/삭제는 수동 SQL 필요).
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+jwt:
+  secret: ${JWT_SECRET:change-this-to-a-long-random-string-later-at-least-32-bytes}
+  expiration-ms: 604800000 # 7일
+
+cors:
+  # 프론트 dev 서버 — 5173이 다른 프로젝트에 점유되면 vite 가 5174, 5175… 로 옮겨 다니므로
+  # 개발 중에는 localhost 아무 포트나 허용한다 (패턴). 배포 시엔 실제 도메인을 여기 넣을 것.
+  allowed-origins:
+    - http://localhost:*
+
+openai:
+  api-key: ${OPENAI_API_KEY:}
+  model: ${OPENAI_MODEL:gpt-4o-mini}
+
+# 팀원 FastAPI AI 서버 (coding-goling-ai). 힌트는 여기로 프록시한다.
+ai-server:
+  base-url: ${AI_SERVER_URL:http://localhost:8000}
+  timeout-ms: 3000 # 04번 문서: 3초 초과 시 정적 힌트로 폴백
+
+execution:
+  docker-timeout-seconds: 5

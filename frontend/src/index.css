@@ -1,0 +1,62 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  @apply bg-snow font-sans text-eel antialiased;
+  overscroll-behavior-y: none;
+}
+
+/* 듀오링고식 3D 버튼 깊이는 Button.tsx의 border-b 유틸로 처리 */
+
+/* CodeMirror 에디터 톤 */
+.cm-editor {
+  border-radius: 12px;
+  font-size: 14px;
+  background: #fbfbfb;
+}
+.cm-editor .cm-scroller {
+  font-family: "JetBrains Mono", "D2Coding", Consolas, monospace;
+  line-height: 1.6;
+}
+.cm-editor.cm-focused {
+  outline: none !important;
+}
+.cm-gutters {
+  background: #f2f2f2 !important;
+  border: none !important;
+  color: #afafaf !important;
+}
+
+/* 스크롤바 */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-thumb {
+  background: #e5e5e5;
+  border-radius: 999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #d0d0d0;
+}
+
+/* react-circular-progressbar 기본 스타일 */
+.CircularProgressbar {
+  width: 100%;
+  vertical-align: middle;
+}
+.CircularProgressbar .CircularProgressbar-path {
+  stroke: #ff6b4a;
+  stroke-linecap: round;
+}
+.CircularProgressbar .CircularProgressbar-trail {
+  stroke: #e5e5e5;
+  stroke-linecap: round;
+}

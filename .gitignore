@@ -1,8 +1,28 @@
+# ── secrets (절대 커밋 금지) ──
 .env
+**/.env
+!**/.env.example
+
+# ── python (ai/) ──
 __pycache__/
 *.pyc
 .pytest_cache/
 .venv/
 venv/
 env/
+
+# ── java / spring (backend/) ──
+backend/build/
+backend/.gradle/
+backend/bin/
+**/*.class
+
+# ── node / vite (frontend/) ──
+frontend/node_modules/
+frontend/dist/
+
+# ── editor / os ──
+.idea/
+.vscode/
+.claude/
 .DS_Store
