@@ -159,7 +159,6 @@ export type Quest = {
   goalValue: number;
   progress: number;
   completed: boolean;
-  aiGenerated: boolean;
 };
 
 export type ShopItem = {
@@ -235,28 +234,4 @@ export const shopApi = {
 
 export const profileApi = {
   weakConcepts: () => api.get<WeakConcept[]>("/profile/weak-concepts"),
-};
-
-export type AiHint = {
-  hint: string;
-  conceptsToReview: string[];
-  /** "ai" = AI 서버가 생성, "static" = 폴백(정적 힌트) */
-  source: "ai" | "static";
-};
-
-export type AiHintRequest = {
-  language: string;
-  problemTitle?: string;
-  problemDescription?: string;
-  code: string;
-  errorMessage?: string;
-  failedTestCase?: { input: string; expectedOutput: string; userOutput: string };
-  /** AI 서버가 죽었을 때 폴백으로 쓸 정적 힌트 (content.ts 의 explanation) */
-  fallbackExplanation?: string;
-};
-
-export const aiApi = {
-  hint: (body: AiHintRequest) => api.post<AiHint>("/ai/hint", body),
-  quest: (body?: { xp?: number; streak?: number; recentAccuracy?: number }) =>
-    api.post<Quest[]>("/ai/quest", body ?? {}),
 };

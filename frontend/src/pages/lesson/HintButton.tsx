@@ -11,8 +11,7 @@ type HintButtonProps = {
 };
 
 /**
- * 에너지를 쓰는 유일한 곳 — 힌트/해설.
- * 정답·오답에는 에너지가 들지 않는다는 걸 UI로도 보여준다.
+ * 힌트/해설 — 에너지를 쓰는 곳 중 하나 (오답 페널티·정답 스트릭 충전과는 별개).
  */
 export const HintButton = ({ challengeId, explanation }: HintButtonProps) => {
   const usedHints = useGame((s) => s.usedHints);

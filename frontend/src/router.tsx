@@ -3,7 +3,7 @@ import { useEffect, type ReactElement } from "react";
 import { createBrowserRouter, Navigate } from "react-router-dom";
 
 import { MainLayout } from "@/components/Layout";
-import { Mascot } from "@/components/Mascot";
+import { MascotLoader } from "@/components/MascotLoader";
 import { Learn } from "@/pages/Learn";
 import { Leaderboard } from "@/pages/Leaderboard";
 import { Lesson } from "@/pages/Lesson";
@@ -20,9 +20,8 @@ import { useAuth } from "@/store/useAuth";
 import { useGame } from "@/store/useGame";
 
 const FullPageLoader = () => (
-  <div className="flex h-full flex-col items-center justify-center gap-y-4">
-    <Mascot size={110} />
-    <p className="text-sm font-bold text-wolf">불러오는 중…</p>
+  <div className="flex h-full flex-col items-center justify-center">
+    <MascotLoader size={130} label="불러오는 중…" />
   </div>
 );
 

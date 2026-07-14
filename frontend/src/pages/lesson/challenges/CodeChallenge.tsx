@@ -13,7 +13,6 @@ import { initPython } from "@/lib/pyRunner";
 import { isClientSide, runnerFor } from "@/lib/runner";
 import { cn } from "@/lib/utils";
 
-import { AiTutorButton } from "../AiTutorButton";
 import type { ChallengeProps } from "../types";
 
 const LANG_META: Record<Language, { ext: string; label: string }> = {
@@ -203,11 +202,6 @@ export const CodeChallenge = ({
             </div>
           ))}
         </div>
-      )}
-
-      {/* 오답일 때만 AI 튜터 — 실패 로그 기반 힌트 (04번 문서) */}
-      {grade && status === "wrong" && !grade.correct && (
-        <AiTutorButton challenge={challenge} grade={grade} />
       )}
     </div>
   );

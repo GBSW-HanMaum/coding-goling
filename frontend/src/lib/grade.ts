@@ -17,7 +17,7 @@ export type GradeResult = {
   ratio: number; // 부분 점수 (통과 비율)
   correct: boolean; // 전부 통과해야 정답 처리
   results: TestResult[];
-  code: string; // 채점한 사용자 코드 (AI 튜터가 그대로 재사용)
+  code: string; // 채점한 사용자 코드
 };
 
 /** 출력 비교용 정규화: 개행 통일 + 줄 끝 공백 제거 + 끝 개행 제거 */

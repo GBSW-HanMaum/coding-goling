@@ -40,6 +40,20 @@ export const LANGUAGE_LABEL: Record<Language, string> = {
   javascript: "자바스크립트",
 };
 
+/** 마지막 글자에 받침이 있는지 (한글 음절 범위 밖 문자는 받침 없음으로 취급) */
+const hasFinalConsonant = (word: string): boolean => {
+  const lastChar = word.trim().at(-1);
+  if (!lastChar) return false;
+  const code = lastChar.charCodeAt(0);
+  if (code < 0xac00 || code > 0xd7a3) return false;
+  return (code - 0xac00) % 28 !== 0;
+};
+
+/** "파이썬을" / "자바를" 처럼 받침 유무에 맞는 목적격 조사를 붙인다 */
+export const withEul = (word: string) => `${word}${hasFinalConsonant(word) ? "을" : "를"}`;
+/** "파이썬은" / "자바는" 처럼 받침 유무에 맞는 주제격 조사를 붙인다 */
+export const withEun = (word: string) => `${word}${hasFinalConsonant(word) ? "은" : "는"}`;
+
 /** 언어별로 "이런 걸 배우게 될 거예요"에 쓸 대표 주제 */
 const LANGUAGE_TOPICS: Record<Language, string> = {
   python: "출력과 변수부터 시작해서, 조건문·반복문·리스트까지",
@@ -70,7 +84,7 @@ export const buildRecommendation = (
   goalId?: string,
   levelId?: string
 ): string[] => [
-  `${LANGUAGE_LABEL[language]}는 ${LANGUAGE_TOPICS[language]} 배우게 될 거야.`,
+  `${withEun(LANGUAGE_LABEL[language])} ${LANGUAGE_TOPICS[language]} 배우게 될 거야.`,
   goalId ? GOAL_LINE[goalId] : "",
   levelId ? LEVEL_LINE[levelId] : "",
   "그리고 여기선 코드를 진짜로 실행해서 채점해. 동작만 맞으면 어떻게 짜든 정답이야!",

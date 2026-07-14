@@ -9,6 +9,7 @@ import {
   LEARNING_GOALS,
   SELF_LEVELS,
   buildRecommendation,
+  withEul,
 } from "@/data/onboarding";
 import { useFinishOnboarding } from "@/hooks/useFinishOnboarding";
 import { useGame } from "@/store/useGame";
@@ -70,7 +71,7 @@ export const OnboardingProfile = () => {
       return (
         <OnboardingShell
           {...shell}
-          lines={[`왜 ${langLabel}를 배우려고 해?`, "목표에 맞춰서 문제를 골라줄게."]}
+          lines={[`왜 ${withEul(langLabel)} 배우려고 해?`, "목표에 맞춰서 문제를 골라줄게."]}
           onNext={next}
           nextDisabled={!goal}
         >
@@ -91,7 +92,7 @@ export const OnboardingProfile = () => {
       return (
         <OnboardingShell
           {...shell}
-          lines={[`${langLabel}를 얼마나 알고 있어?`, "솔직하게 골라도 괜찮아. 여기서 시작점이 갈려."]}
+          lines={[`${withEul(langLabel)} 얼마나 알고 있어?`, "솔직하게 골라도 괜찮아. 여기서 시작점이 갈려."]}
           onNext={next}
           nextDisabled={!level}
         >

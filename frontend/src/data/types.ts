@@ -13,7 +13,12 @@ export type ConceptTag =
   | "pointer" // 포인터
   | "memory" // 메모리 관리
   | "io" // 입력 처리
-  | "debug"; // 디버깅
+  | "debug" // 디버깅
+  | "dict" // 딕셔너리·맵
+  | "exception" // 예외 처리
+  | "recursion" // 재귀 함수
+  | "oop" // 클래스·객체지향
+  | "algorithm"; // 정렬·탐색 등 알고리즘
 
 /** 프로필에 보여줄 한국어 라벨 */
 export const CONCEPT_LABEL: Record<ConceptTag, string> = {
@@ -29,6 +34,11 @@ export const CONCEPT_LABEL: Record<ConceptTag, string> = {
   memory: "메모리 관리",
   io: "입력 처리",
   debug: "디버깅",
+  dict: "딕셔너리·맵",
+  exception: "예외 처리",
+  recursion: "재귀 함수",
+  oop: "클래스·객체지향",
+  algorithm: "정렬·탐색",
 };
 
 export type ChallengeType =

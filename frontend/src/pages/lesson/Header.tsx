@@ -23,7 +23,7 @@ export const Header = ({ percentage, energy, onClose }: HeaderProps) => (
 
     <div
       className="flex items-center gap-x-1 font-extrabold text-coral"
-      title="정답·오답으로는 에너지가 줄지 않아요. 힌트/AI 튜터에만 사용되고, 정답을 맞히면 충전됩니다."
+      title="오답을 내면 에너지가 1 줄고, 정답을 3번 연속 맞히면 충전돼요. 힌트에도 쓰입니다."
     >
       <EnergyBattery size={28} />
       {energy}

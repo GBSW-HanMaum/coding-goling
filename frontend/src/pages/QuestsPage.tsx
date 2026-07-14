@@ -1,4 +1,4 @@
-import { Check, Sparkles, Zap } from "lucide-react";
+import { Check, Zap } from "lucide-react";
 
 import { Loading, LoadError } from "@/components/AsyncState";
 import { FeedWrapper, StickyWrapper } from "@/components/Layout";
@@ -6,16 +6,15 @@ import { Promo } from "@/components/Promo";
 import { UserProgress } from "@/components/UserProgress";
 import { Progress } from "@/components/ui/Progress";
 import { useApi } from "@/hooks/useApi";
-import { aiApi } from "@/lib/api";
+import { questApi } from "@/lib/api";
 import { cn } from "@/lib/utils";
 
 /**
- * 내 퀘스트 — POST /ai/quest 를 부른다.
- * 서버가 OpenAI 로 AI 퀘스트를 만들거나(하루 1회 캐싱), 키가 없으면 기본 퀘스트로 폴백해 준다.
- * 어느 쪽이든 항상 유효한 퀘스트 목록이 온다 (진행률은 서버가 현재 XP 기준으로 계산).
+ * 내 퀘스트 — GET /quests 를 부른다.
+ * 회원가입 때 만들어둔 기본 퀘스트 목록 (진행률은 서버가 현재 XP 기준으로 계산).
  */
 export const QuestsPage = () => {
-  const { data: quests, loading, error, reload } = useApi(() => aiApi.quest());
+  const { data: quests, loading, error, reload } = useApi(() => questApi.list());
 
   return (
     <div className="flex flex-row-reverse gap-x-12">
@@ -66,16 +65,6 @@ export const QuestsPage = () => {
                     <div className="flex items-center justify-between">
                       <p className="flex items-center gap-x-1.5 font-bold text-eel">
                         {quest.title}
-                        {/* AI가 만들어준 퀘스트임을 표시 (04번 문서에서 실제 생성 붙음) */}
-                        {quest.aiGenerated && (
-                          <span
-                            title="AI가 만든 퀘스트"
-                            className="inline-flex items-center gap-0.5 rounded-full bg-beetle/15 px-1.5 py-0.5 text-[10px] font-extrabold text-beetle"
-                          >
-                            <Sparkles className="h-3 w-3" />
-                            AI
-                          </span>
-                        )}
                       </p>
                       <span className="text-sm font-bold text-hare">
                         {quest.progress}/{quest.goalValue}

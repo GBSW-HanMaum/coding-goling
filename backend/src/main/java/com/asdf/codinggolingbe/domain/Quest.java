@@ -64,11 +64,6 @@ public class Quest {
         return new Quest(userId, title, goalValue, false, null);
     }
 
-    /** 04번 문서의 AI 생성 일일 퀘스트 */
-    public static Quest aiQuest(Long userId, String title, int goalValue, LocalDateTime expiresAt) {
-        return new Quest(userId, title, goalValue, true, expiresAt);
-    }
-
     @PrePersist
     void onCreate() {
         this.createdAt = LocalDateTime.now();

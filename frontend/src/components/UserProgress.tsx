@@ -37,7 +37,7 @@ export const UserProgress = () => {
       <Link
         to="/shop"
         className={cn(pill, "text-coral")}
-        title="에너지 — 힌트·AI 튜터에 쓰고, 정답을 맞히면 충전돼요"
+        title="에너지 — 오답 시 1 감소, 정답 3연속 시 충전돼요. 힌트에도 사용해요"
       >
         <EnergyBattery size={26} />
         <span className="font-extrabold">{energy}</span>

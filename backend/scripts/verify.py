@@ -420,76 +420,6 @@ def scenario_4_execution(ctx: dict) -> None:
     )
 
 
-def scenario_5_ai(ctx: dict) -> None:
-    """AI 힌트(프록시+폴백) / AI 퀘스트(OpenAI 직접+폴백) — 04번 문서.
-
-    핵심은 폴백: AI 서버나 OpenAI 가 죽어도 앱이 안 끊긴다.
-    정상 프록시 경로는 스텁 AI 서버를 8000에 띄운 뒤에만(--ai-up) 검증한다.
-    """
-    print(f"\n{BOLD}━━ 시나리오 5 · AI 힌트 & 퀘스트 ━━{RESET}")
-    token = ctx["token"]
-
-    def hint(body):
-        return request("POST", "/ai/hint", body, token=token)
-
-    ai_server_up = False
-    try:
-        # 스텁이든 팀원 서버든 8000에서 recommended_hint 를 주면 source=ai 가 된다
-        r = hint({
-            "language": "python",
-            "problem_title": "두 수의 합",
-            "problem_description": "두 정수를 입력받아 합을 출력",
-            "code": "a=input()\nprint(a)",
-            "error_message": "",
-            "failed_test_case": {
-                "input": "3 5", "expected_output": "8", "user_output": "3 5"},
-            "fallback_explanation": "이건 폴백 문구",
-        })
-        ai_server_up = r["source"] == "ai"
-    except Exception:
-        pass
-
-    if ai_server_up:
-        section("정상 프록시 (AI 서버가 recommended_hint 반환)")
-        check("source 가 ai", r["source"], "ai")
-        check("힌트가 비어있지 않음", bool(r["hint"]), True)
-    else:
-        section("폴백 (AI 서버 다운/OpenAI 키 없음)")
-        r = hint({
-            "language": "python",
-            "problem_title": "t", "problem_description": "d",
-            "code": "print(1)",
-            "fallback_explanation": "프론트가 준 정적 힌트가 그대로 나와야 함",
-        })
-        check("source 가 static (폴백)", r["source"], "static")
-        check("프론트의 정적 힌트를 그대로 사용", r["hint"], "프론트가 준 정적 힌트가 그대로 나와야 함")
-
-    section("힌트는 어떤 경우에도 200 으로 힌트를 준다 (앱이 안 끊긴다)")
-    r = hint({"language": "c", "problem_title": "t", "problem_description": "d",
-              "code": "int main(){}", "fallback_explanation": "fallback"})
-    check("힌트 문자열이 항상 존재", bool(r and r.get("hint")), True)
-
-    section("AI 퀘스트")
-    quests = request("POST", "/ai/quest", {"xp": 50, "streak": 3, "recent_accuracy": 80},
-                     token=token)
-    check("퀘스트가 비어있지 않음", len(quests) >= 1, True)
-
-    if any(q["ai_generated"] for q in quests):
-        # 키가 있으면 OpenAI 로 실제 생성 (기본 "N XP 획득하기" 가 아닌 제목)
-        check("실제 AI 퀘스트 생성 (ai_generated=true)",
-              any(q["ai_generated"] for q in quests), True)
-
-        # 하루 1회 캐싱 — 재호출하면 OpenAI 를 다시 부르지 않고 같은 퀘스트를 준다
-        again = request("POST", "/ai/quest", {"xp": 50}, token=token)
-        check("하루 1회 캐싱 (재호출 시 동일 퀘스트)",
-              sorted(q["id"] for q in again),
-              sorted(q["id"] for q in quests))
-    else:
-        # 키가 없으면 회원가입 때 넣어둔 기본 3개(ai_generated=false)로 폴백
-        check("폴백 시 기본 퀘스트(비-AI) 반환",
-              all(not q["ai_generated"] for q in quests), True)
-
-
 # ─────────────────────────────────────────────────────────── 정리
 
 
@@ -522,8 +452,6 @@ def main() -> int:
     parser.add_argument("--keep", action="store_true", help="테스트 계정을 지우지 않는다")
     parser.add_argument("--exec", action="store_true",
                         help="시나리오 4(C/Java Docker 실행)도 돌린다 — Docker 필요, 느림")
-    parser.add_argument("--ai", action="store_true",
-                        help="시나리오 5(AI 힌트/퀘스트)도 돌린다")
     args = parser.parse_args()
     BASE_URL = args.base_url.rstrip("/")
 
@@ -540,8 +468,6 @@ def main() -> int:
     scenario_3_shop_profile(ctx)
     if args.exec:
         scenario_4_execution(ctx)
-    if args.ai:
-        scenario_5_ai(ctx)
 
     if not args.keep:
         cleanup([ctx["email"]])

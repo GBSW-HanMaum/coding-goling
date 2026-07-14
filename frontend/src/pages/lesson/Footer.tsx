@@ -2,6 +2,7 @@ import { useEffect } from "react";
 
 import { CheckCircle2, XCircle } from "lucide-react";
 
+import { MascotLoader } from "@/components/MascotLoader";
 import { Button } from "@/components/ui/Button";
 import { cn } from "@/lib/utils";
 
@@ -88,6 +89,13 @@ export const Footer = ({
                 </p>
               )}
             </div>
+          </div>
+        )}
+
+        {status === "none" && checking && (
+          <div className="flex items-center gap-x-3 font-extrabold text-wolf lg:text-2xl">
+            <MascotLoader size={44} />
+            <p>채점 중…</p>
           </div>
         )}
 

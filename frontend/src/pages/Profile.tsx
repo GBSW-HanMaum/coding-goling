@@ -1,4 +1,5 @@
-import { BookCheck, Flame, Gem, Star, Target } from "lucide-react";
+import { BookCheck, Flame, Gem, NotebookPen, Star, Target } from "lucide-react";
+import { Link } from "react-router-dom";
 
 import { Loading, LoadError } from "@/components/AsyncState";
 import { EnergyBattery } from "@/components/EnergyBattery";
@@ -6,13 +7,14 @@ import { FeedWrapper, StickyWrapper } from "@/components/Layout";
 import { Mascot } from "@/components/Mascot";
 import { Promo } from "@/components/Promo";
 import { UserProgress } from "@/components/UserProgress";
+import { buttonVariants } from "@/components/ui/Button";
 import { Progress } from "@/components/ui/Progress";
 import { courseById } from "@/data/content";
 import { LANGUAGE_LABEL } from "@/data/onboarding";
 import { useApi } from "@/hooks/useApi";
 import { profileApi } from "@/lib/api";
 import { cn } from "@/lib/utils";
-import { rollUpByConcept } from "@/lib/weakConcepts";
+import { buildWrongNotes, rollUpByConcept } from "@/lib/weakConcepts";
 import { useAuth } from "@/store/useAuth";
 import { useGame } from "@/store/useGame";
 
@@ -65,6 +67,7 @@ export const Profile = () => {
   const course = courseById(activeCourse);
   const doneCount = Object.values(completedLessons).filter(Boolean).length;
   const concepts = rows ? rollUpByConcept(rows) : [];
+  const wrongNotes = rows ? buildWrongNotes(rows) : [];
 
   return (
     <div className="flex flex-row-reverse gap-x-12">
@@ -120,14 +123,63 @@ export const Profile = () => {
           />
         </div>
 
+        {loading && <Loading />}
+        {error && <LoadError message={error} onRetry={reload} />}
+
+        {/* 오답노트 — 개념 요약이 아니라 실제로 틀린 문제 하나하나 */}
+        {rows && (
+          <div className="mb-8">
+            <div className="mb-3 flex items-center gap-x-2">
+              <NotebookPen className="h-5 w-5 text-coral" />
+              <h2 className="text-lg font-extrabold text-eel">오답노트</h2>
+            </div>
+
+            {wrongNotes.length === 0 ? (
+              <div className="flex flex-col items-center gap-y-2 rounded-2xl border-2 border-swan py-10">
+                <p className="text-sm font-bold text-wolf">
+                  아직 오답노트가 비어 있어요.
+                </p>
+                <p className="text-xs text-hare">
+                  틀린 문제가 생기면 여기 모아서 다시 풀어볼 수 있게 해줄게요.
+                </p>
+              </div>
+            ) : (
+              <ul className="space-y-3">
+                {wrongNotes.map((note) => (
+                  <li
+                    key={note.challengeId}
+                    className="rounded-2xl border-2 border-swan p-4"
+                  >
+                    <div className="mb-1 flex items-center justify-between gap-x-3">
+                      <p className="text-xs font-bold uppercase tracking-wide text-hare">
+                        {note.lessonTitle}
+                        {note.conceptLabels.length > 0 && ` · ${note.conceptLabels.join(", ")}`}
+                      </p>
+                      <span className="shrink-0 text-xs font-bold text-cardinal">
+                        {note.wrong}회 오답
+                      </span>
+                    </div>
+                    <p className="mb-3 line-clamp-2 whitespace-pre-wrap text-sm font-bold text-eel">
+                      {note.question}
+                    </p>
+                    <Link
+                      to={`/lesson/${note.lessonId}`}
+                      className={cn(buttonVariants({ variant: "dangerOutline", size: "sm" }))}
+                    >
+                      다시 풀어보기
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+        )}
+
         {/* 취약 개념 */}
         <div className="mb-3 flex items-center gap-x-2">
           <Target className="h-5 w-5 text-coral" />
           <h2 className="text-lg font-extrabold text-eel">약한 개념</h2>
         </div>
-
-        {loading && <Loading />}
-        {error && <LoadError message={error} onRetry={reload} />}
 
         {rows && concepts.length === 0 && (
           <div className="flex flex-col items-center gap-y-2 rounded-2xl border-2 border-swan py-12">

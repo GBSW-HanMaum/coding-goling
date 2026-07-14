@@ -1,12 +1,10 @@
-import { Loader2 } from "lucide-react";
-
 import { Button } from "./ui/Button";
+import { MascotLoader } from "./MascotLoader";
 
 /** 서버에서 불러오는 중 */
 export const Loading = ({ label = "불러오는 중…" }: { label?: string }) => (
-  <div className="flex flex-col items-center gap-y-3 py-16 text-hare">
-    <Loader2 className="h-8 w-8 animate-spin" />
-    <p className="text-sm font-bold">{label}</p>
+  <div className="py-16">
+    <MascotLoader size={92} label={label} />
   </div>
 );
 

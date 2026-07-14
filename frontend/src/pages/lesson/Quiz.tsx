@@ -8,7 +8,7 @@ import { Mascot } from "@/components/Mascot";
 import { LANGUAGE_LABEL } from "@/data/onboarding";
 import type { Lesson } from "@/data/types";
 import { getToken, progressApi } from "@/lib/api";
-import { CORRECT_ENERGY_MAX, CORRECT_ENERGY_MIN, useGame } from "@/store/useGame";
+import { useGame } from "@/store/useGame";
 
 /** 레슨 완료 보상 젬 */
 const LESSON_GEMS = 10;
@@ -43,15 +43,22 @@ const formatDuration = (ms: number) => {
 export const Quiz = ({ lesson }: { lesson: Lesson }) => {
   const navigate = useNavigate();
   const energy = useGame((s) => s.energy);
-  const gainEnergy = useGame((s) => s.gainEnergy);
+  const recordCorrectAnswer = useGame((s) => s.recordCorrectAnswer);
+  const recordWrongAnswer = useGame((s) => s.recordWrongAnswer);
   const addXp = useGame((s) => s.addXp);
   const addGems = useGame((s) => s.addGems);
+  const completedChallenges = useGame((s) => s.completedChallenges);
   const completeChallenge = useGame((s) => s.completeChallenge);
   const completeLesson = useGame((s) => s.completeLesson);
   const hydrate = useGame((s) => s.hydrate);
 
   const challenges = lesson.challenges;
-  const [activeIndex, setActiveIndex] = useState(0);
+  // 이전에 풀어둔 문제가 있으면 그다음부터 이어서 — 레슨을 나갔다 다시 들어와도 처음으로 안 돌아간다.
+  // 레슨을 전부 끝낸 뒤 다시 들어오면(연습하기) 전부 완료 상태라 findIndex가 -1 → 0부터 재시작한다.
+  const [activeIndex, setActiveIndex] = useState(() => {
+    const firstUnfinished = challenges.findIndex((c) => !completedChallenges[c.id]);
+    return firstUnfinished === -1 ? 0 : firstUnfinished;
+  });
   const [status, setStatus] = useState<Status>("none");
   const [canCheck, setCanCheck] = useState(false);
   const [checking, setChecking] = useState(false);
@@ -64,9 +71,9 @@ export const Quiz = ({ lesson }: { lesson: Lesson }) => {
   const wrongOnce = useRef<Set<string>>(new Set());
   // Lesson.tsx가 레슨 id로 key를 주므로 이 마운트 시점 = 레슨 시작 시점
   const startedAt = useRef(Date.now());
-  // 서버로 보낼 것들 — 문제별 정답/오답과, 이번 레슨에서 충전된 에너지 총량
+  // 서버로 보낼 것들 — 문제별 정답/오답과, 이번 레슨에서 변한 에너지 총량(오답 -1, 3연속 정답 +1~5)
   const attempts = useRef<{ challengeId: string; correct: boolean }[]>([]);
-  const energyGained = useRef(0);
+  const energyDelta = useRef(0);
 
   const challenge = challenges[activeIndex];
   const percentage = finished ? 100 : (activeIndex / challenges.length) * 100;
@@ -98,7 +105,7 @@ export const Quiz = ({ lesson }: { lesson: Lesson }) => {
         scoreRatio,
         xpEarned: xp,
         gemsEarned: LESSON_GEMS,
-        energyDelta: energyGained.current,
+        energyDelta: energyDelta.current,
         attempts: attempts.current,
       })
       .then(hydrate) // 서버가 진실 소스 — 돌아온 값으로 맞춘다
@@ -136,15 +143,13 @@ export const Quiz = ({ lesson }: { lesson: Lesson }) => {
     if (res.correct) {
       setStatus("correct");
       completeChallenge(challenge.id);
-      // 정답을 맞힐 때마다 에너지가 조금씩 충전된다 (충전량은 매번 랜덤)
-      const charge =
-        CORRECT_ENERGY_MIN +
-        Math.floor(Math.random() * (CORRECT_ENERGY_MAX - CORRECT_ENERGY_MIN + 1));
-      gainEnergy(charge);
-      energyGained.current += charge;
+      // 3번 연속으로 맞히면 에너지가 랜덤 충전된다 (그 전까지는 스트릭만 쌓임)
+      energyDelta.current += recordCorrectAnswer();
     } else {
       setStatus("wrong");
       wrongOnce.current.add(challenge.id);
+      // 오답은 에너지 1 감소 (스트릭도 끊김)
+      energyDelta.current += recordWrongAnswer();
     }
   };
 
@@ -179,7 +184,12 @@ export const Quiz = ({ lesson }: { lesson: Lesson }) => {
             <ResultCard variant="energy" value={energy} />
           </div>
           <p className="text-sm text-wolf">
-            정답을 맞히는 동안 에너지는 한 칸도 줄지 않았어요.
+            {energyDelta.current > 0 &&
+              `이번 레슨에서 에너지가 ${energyDelta.current} 늘었어요!`}
+            {energyDelta.current < 0 &&
+              `오답 때문에 에너지가 ${-energyDelta.current} 줄었어요. 정답을 3번 연속 맞히면 충전돼요.`}
+            {energyDelta.current === 0 &&
+              "정답 3번 연속을 채우면 에너지가 충전돼요."}
           </p>
         </div>
         <Footer status="completed" onCheck={onCheck} />
