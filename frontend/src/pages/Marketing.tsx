@@ -32,7 +32,7 @@ export const Marketing = () => (
     <header className="mx-auto flex w-full max-w-[988px] items-center justify-between px-5 py-4">
       <div className="flex items-center gap-x-2">
         <Mascot size={36} />
-        <span className="text-xl font-extrabold text-coral">코드런</span>
+        <span className="text-xl font-extrabold text-coral">코딩고링</span>
       </div>
       <Link to="/login" className={cn(buttonVariants({ variant: "ghost", size: "sm" }))}>
         로그인
@@ -46,7 +46,7 @@ export const Marketing = () => (
         <h1 className="text-center text-2xl font-extrabold leading-snug text-eel lg:text-4xl">
           실행하며 배우는 코딩,
           <br />
-          <span className="text-coral">코드런</span>과 함께.
+          <span className="text-coral">코딩고링</span>과 함께.
         </h1>
         <p className="text-center text-base text-wolf">
           하루 5분, 진짜 코드를 돌려보며 파이썬과 C를 익히세요.

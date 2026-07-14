@@ -72,7 +72,7 @@ export const Learn = () => {
           <span className="text-2xl">{course.emoji}</span>
           <div>
             <p className="text-xs font-bold uppercase tracking-wide text-hare">
-              코드런 · {course.title}
+              코딩고링 · {course.title}
             </p>
             <h1 className="text-lg font-extrabold text-eel">
               {course.description}
