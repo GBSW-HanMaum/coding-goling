@@ -11,7 +11,7 @@ export const MobileTopbar = () => (
   <nav className="fixed left-0 right-0 top-0 z-40 flex h-[56px] items-center justify-between border-b-2 border-swan bg-white px-4 lg:hidden">
     <Link to="/learn" className="flex items-center gap-x-2">
       <Mascot size={30} />
-      <span className="text-lg font-extrabold text-coral">코드런</span>
+      <span className="text-lg font-extrabold text-coral">코딩고링</span>
     </Link>
     <div className="scale-90">
       <UserProgress />

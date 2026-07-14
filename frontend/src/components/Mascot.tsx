@@ -9,7 +9,7 @@ type MascotProps = {
 };
 
 /**
- * 코드런 마스코트 "코리(Cory)" — 코랄빛 앵무새.
+ * 코딩고링 마스코트 "코리(Cory)" — 코랄빛 앵무새.
  * 앵무새는 듣고 따라 하며 배운다 → "매일 반복 학습" 컨셉과 맞고,
  * 홍금강앵무(scarlet macaw)의 코랄 톤이 브랜드 색과 일치한다.
  *
@@ -44,7 +44,7 @@ export const Mascot = ({
       className={rootClass || undefined}
       xmlns="http://www.w3.org/2000/svg"
       role="img"
-      aria-label="코드런 앵무새 마스코트 코리"
+      aria-label="코딩고링 앵무새 마스코트 코리"
     >
       <defs>
         <radialGradient id="coryBody" cx="38%" cy="28%" r="78%">

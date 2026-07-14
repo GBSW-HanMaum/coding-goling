@@ -21,7 +21,7 @@ export const AuthShell = ({
     <header className="mx-auto flex w-full max-w-[988px] items-center justify-between px-5 py-4">
       <Link to="/" className="flex items-center gap-x-2">
         <Mascot size={36} />
-        <span className="text-xl font-extrabold text-coral">코드런</span>
+        <span className="text-xl font-extrabold text-coral">코딩고링</span>
       </Link>
     </header>
 

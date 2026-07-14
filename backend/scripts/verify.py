@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-코드런 백엔드 E2E 검증 — 시나리오 3개.
+코딩고링 백엔드 E2E 검증 — 시나리오 3개.
 
 실제로 서버에 HTTP 요청을 날려서 응답을 확인한다. (표준 라이브러리만 사용, 의존성 없음)
 
@@ -447,7 +447,7 @@ def cleanup(emails: list[str]) -> None:
 def main() -> int:
     global BASE_URL
 
-    parser = argparse.ArgumentParser(description="코드런 백엔드 E2E 검증")
+    parser = argparse.ArgumentParser(description="코딩고링 백엔드 E2E 검증")
     parser.add_argument("--base-url", default=BASE_URL, help="API 베이스 URL")
     parser.add_argument("--keep", action="store_true", help="테스트 계정을 지우지 않는다")
     parser.add_argument("--exec", action="store_true",
@@ -455,7 +455,7 @@ def main() -> int:
     args = parser.parse_args()
     BASE_URL = args.base_url.rstrip("/")
 
-    print(f"{BOLD}코드런 백엔드 검증{RESET}  {DIM}{BASE_URL}{RESET}")
+    print(f"{BOLD}코딩고링 백엔드 검증{RESET}  {DIM}{BASE_URL}{RESET}")
 
     health = request("GET", "/health")
     check("서버 헬스체크", health, "ok")

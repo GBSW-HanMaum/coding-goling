@@ -1,7 +1,7 @@
 import type { Config } from "tailwindcss";
 
 /**
- * 코드런 디자인 토큰 — 듀오링고 브랜드 시스템 재현
+ * 코딩고링 디자인 토큰 — 듀오링고 브랜드 시스템 재현
  * 색: design.duolingo.com 공식 팔레트 / 폰트: Nunito (Feather Bold 무료 대체)
  * ※ 학교 캡스톤 / 비상업 용도
  */

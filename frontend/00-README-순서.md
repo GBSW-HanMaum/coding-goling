@@ -1,4 +1,4 @@
-# 코드런(CodeRun) — Claude Code 작업 지시서 v2 (팀원 프론트 기준)
+# 코딩고링(CodingGoling) — Claude Code 작업 지시서 v2 (팀원 프론트 기준)
 
 > ⚠️ 이전 버전(00~08)은 Next.js+Clerk+Drizzle+Docker 기준으로 짠 문서였는데,
 > 팀원(재성?)이 이미 **Vite + React SPA**로 완전히 다른, 더 진도 나간 코드를 만들어놨습니다.

@@ -1,4 +1,4 @@
-/* 코드런 Python 실행 워커 — Pyodide를 CDN에서 로드해 사용자 코드를 실행한다. */
+/* 코딩고링 Python 실행 워커 — Pyodide를 CDN에서 로드해 사용자 코드를 실행한다. */
 /* global importScripts, loadPyodide */
 
 importScripts("https://cdn.jsdelivr.net/pyodide/v0.26.2/full/pyodide.js");

@@ -30,7 +30,7 @@ export const Sidebar = () => {
     <Link to="/learn" className="flex items-center gap-x-2 pb-7 pl-2 pt-7">
       <Mascot size={40} />
       <h1 className="text-2xl font-extrabold tracking-tight text-coral">
-        코드런
+        코딩고링
       </h1>
     </Link>
 

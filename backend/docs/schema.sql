@@ -1,5 +1,5 @@
 -- ============================================================
--- CodingGoling (코드런) — MySQL 스키마
+-- CodingGoling (코딩고링) — MySQL 스키마
 -- ERD 기반. root 비번: mysql
 -- 실행: mysql -u root -pmysql < schema.sql
 -- (또는 Claude Code에게 이 파일 실행 요청)

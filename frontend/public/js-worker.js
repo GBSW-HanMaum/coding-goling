@@ -1,4 +1,4 @@
-/* 코드런 JavaScript 실행 워커 — 사용자 코드를 Web Worker 안에서 실행한다. */
+/* 코딩고링 JavaScript 실행 워커 — 사용자 코드를 Web Worker 안에서 실행한다. */
 /* Worker로 격리했기 때문에 무한 루프가 나도 메인 UI는 얼지 않고,
    jsRunner가 시간 초과 시 워커를 terminate 해 강제 종료한다. */
 
